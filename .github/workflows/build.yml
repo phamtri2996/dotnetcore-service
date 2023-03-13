@@ -42,5 +42,19 @@ jobs:
         
       - name: Test
         run: dotnet test dotnetcore-service.csproj
+    deploy:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: SSH Deploy
+          uses: appleboy/ssh-action@master
+          with:
+            host: 103.57.221.158
+            username: github-bot
+            key: ${{ secrets.SSH_PRIVATE_KEY }}
+            passphrase: ${{ secrets.SSH_PASSPHRASE }}
+            script: |
+              cd /usr/local/src/dotnetcore-service
+              git pull origin main
       
       
