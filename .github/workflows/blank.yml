@@ -41,6 +41,6 @@ jobs:
         run: dotnet build dotnetcore-service.csproj
         
       - name: Test
-        run: dotnet test MyProject.Test.csproj
+        run: dotnet test dotnetcore-service.csproj
       
       
