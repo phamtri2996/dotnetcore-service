@@ -56,7 +56,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd /usr/local/src/dotnetcore-service
+            cd ${{ secrets.PATH }}
             git pull origin main
       
       
