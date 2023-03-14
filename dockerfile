@@ -4,10 +4,9 @@ EXPOSE 5000
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["dotnetcore-service/dotnetcore-service.csproj", "dotnetcore-service/"]
-RUN dotnet restore "dotnetcore-service/dotnetcore-service.csproj"
+COPY dotnetcore-service.csproj .
+RUN dotnet restore "dotnetcore-service.csproj"
 COPY . .
-WORKDIR "/src/dotnetcore-service"
 RUN dotnet build "dotnetcore-service.csproj" -c Release -o /app/build
 
 FROM build AS publish
