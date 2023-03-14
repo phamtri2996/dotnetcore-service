@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  sale-platform-gateway-api:
+    build:
+      dockerfile: sale-platform-gateway-api/Dockerfile
+      context: ~/Documents/GitHub/sale-platform-gateway-api
+    restart: always
+    environment:
+      # - OTEL_EXPORTER_OTLP_ENDPOINT=otel-collector:4318
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5000
+    ports:
+      - "5000:5000"
