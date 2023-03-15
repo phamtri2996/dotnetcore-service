@@ -85,11 +85,11 @@ jobs:
             docker-compose down
             echo "Remove unused previous built containers"
             if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
-                docker rm -v $(docker ps -f "status=exited" -q) \
+                docker rm -v $(docker ps -f "status=exited" -q); \
             fi
-            echo "start new container for sẻvice"
+            echo "start new container for service"
             docker-compose up -d --build
             echo "Remove unused images"
             if [[ "$(docker images -f dangling=true -q)" != "" ]]; then \
-                docker rmi $(docker images -f "dangling=true" -q) \
+                docker rmi $(docker images -f "dangling=true" -q); \
             fi
