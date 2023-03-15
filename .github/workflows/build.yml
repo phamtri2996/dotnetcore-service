@@ -80,8 +80,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
-            cd ${{ secrets.PATH }}
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/dotnetcore-service:latest
+            cd ${{ secrets.PATH }}
             docker-compose up -d --build
       
       
