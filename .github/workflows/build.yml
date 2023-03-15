@@ -84,10 +84,12 @@ jobs:
             cd ${{ secrets.PATH }}
             docker-compose down
             echo "Remove unused previous built containers"
-            docker rm -v $(docker ps -f "status=exited" -q)
+            if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
+                docker rm -v $(docker ps -f "status=exited" -q) \
+            fi
             echo "start new container for sẻvice"
             docker-compose up -d --build
             echo "Remove unused images"
-            if [[ "$(docker images -f dangling=true -q)" == "" ]]; then \
+            if [[ "$(docker images -f dangling=true -q)" != "" ]]; then \
                 docker rmi $(docker images -f "dangling=true" -q) \
             fi
