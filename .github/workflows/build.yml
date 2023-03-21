@@ -95,7 +95,7 @@ jobs:
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
             echo "set new tag"
-            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
+            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=${{TAG}}/' .env
             echo "start new container for service"
             docker-compose up -d --build
             echo "Remove unused images"
