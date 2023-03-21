@@ -79,6 +79,7 @@ jobs:
 
       - env:
         TAG: ${{ needs.deploy-docker-hub.outputs.output1 }}
+        run: echo $TAG
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
