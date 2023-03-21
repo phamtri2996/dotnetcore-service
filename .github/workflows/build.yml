@@ -37,8 +37,6 @@ jobs:
   deploy-docker-hub:
     runs-on: ubuntu-latest
     needs: build-test
-    outputs:
-      output1: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -68,6 +66,8 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+    outputs:
+      output1: ${{ steps.meta.outputs.tags }}
 
 
   deploy-vps:
@@ -95,7 +95,7 @@ jobs:
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
             echo "set new tag"
-            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=${{TAG}}/' .env
+            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
             echo "start new container for service"
             docker-compose up -d --build
             echo "Remove unused images"
