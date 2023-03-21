@@ -94,7 +94,7 @@ jobs:
             if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
-            echo "set new tag"
+            echo "set new tag $TAG"
             sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
             echo "start new container for service"
             docker-compose up -d --build
