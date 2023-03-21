@@ -77,10 +77,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - env:
-        TAG: ${{ needs.deploy-docker-hub.outputs.output1 }}
-        run: echo $TAG
-
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
         with:
@@ -96,8 +92,8 @@ jobs:
             if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
-            echo "set new tag $TAG"
-            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
+            echo "set new tag"
+            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=${{ needs.deploy-docker-hub.outputs.output1 }}/' .env
             echo "start new container for service"
             docker-compose up -d --build
             echo "Remove unused images"
