@@ -37,6 +37,9 @@ jobs:
   deploy-docker-hub:
     runs-on: ubuntu-latest
     needs: build-test
+    outputs:
+      output1: ${{steps.step_output.outputs.tag}}
+      output2: ${{steps.step_output.outputs.label}}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -66,9 +69,11 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-    outputs:
-      output1: ${{ steps.meta.outputs.tags }}
-
+      - name: Set output
+        id: step_output
+        run: |
+          echo "tag=${{ steps.meta.outputs.tags }}" >> $GITHUB_OUTPUT
+          echo "label=${{ steps.meta.outputs.labels }}" >> $GITHUB_OUTPUT
 
   deploy-vps:
     runs-on: ubuntu-latest
@@ -94,7 +99,7 @@ jobs:
             if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
-            echo "set new tag $TAG"
+            echo "set new tag $TAG ${{ needs.deploy-docker-hub.outputs.output1 }} ${{ needs.deploy-docker-hub.outputs.output2 }}"
             sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
             echo "start new container for service"
             docker-compose up -d --build
