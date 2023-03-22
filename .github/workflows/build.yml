@@ -76,14 +76,14 @@ jobs:
   deploy-vps:
     runs-on: ubuntu-latest
     needs: deploy-docker-hub
-    env:
-      TAG: ${{ needs.deploy-docker-hub.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
+        env:
+          TAG: ${{ needs.deploy-docker-hub.outputs.version }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
