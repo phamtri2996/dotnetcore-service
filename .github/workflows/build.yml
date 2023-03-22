@@ -82,8 +82,6 @@ jobs:
 
       - name: SSH Deploy
         uses: appleboy/ssh-action@master
-        env:
-          TAG: ${{ needs.deploy-docker-hub.outputs.version }}
         with:
           host: ${{ secrets.HOST }}
           port: ${{ secrets.PORT }}
@@ -97,8 +95,8 @@ jobs:
             if [[ "$(docker ps -f "status=exited" -q)" != "" ]]; then \
                 docker rm -v $(docker ps -f "status=exited" -q); \
             fi
-            echo "set new tag $TAG ${{ needs.deploy-docker-hub.outputs.version }}"
-            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=$TAG/' .env
+            echo "set new tag ${{ needs.deploy-docker-hub.outputs.version }}"
+            sed -i 's/DOTNETCORE_SERVICE_TAG=.*/DOTNETCORE_SERVICE_TAG=${{ needs.deploy-docker-hub.outputs.version }}/' .env
             echo "start new container for service"
             docker-compose up -d --build
             echo "Remove unused images"
